@@ -6,6 +6,7 @@ class Persona(models.Model):
         ('masculino', 'Masculino'),
         ('femenino', 'Femenino'),
     )
+    id = models.AutoField(primary_key=True)
     dni = models.CharField(max_length=8, unique=True)
     nombre_completo = models.CharField(max_length=200)
     fecha_nacimiento = models.DateField()
@@ -22,6 +23,7 @@ class Persona(models.Model):
 
 
 class EstadoSalud(models.Model):
+    id = models.AutoField(primary_key=True)
     persona = models.OneToOneField(Persona, on_delete=models.CASCADE)
     es_discapacitado = models.BooleanField(null=True)
     posee_obesidad = models.BooleanField(null=True)

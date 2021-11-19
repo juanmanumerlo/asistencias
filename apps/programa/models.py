@@ -6,6 +6,7 @@ from apps.persona.models import Persona
 
 
 class TipoAsistencia(ModeloBase):
+    id = models.AutoField(primary_key=True)
     descripcion = models.CharField(max_length=150,
                                    unique=True)
 
@@ -14,6 +15,7 @@ class TipoAsistencia(ModeloBase):
 
 
 class Programa(ModeloBase):
+    id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100, unique=True)
     tipo_asistencias = models.ManyToManyField(TipoAsistencia)
     requisitos = models.FileField(upload_to="requisitos", blank=True)
@@ -25,6 +27,7 @@ class Programa(ModeloBase):
 
 
 class AsignacionBeneficio(ModeloBase):
+    id = models.AutoField(primary_key=True)
     programa = models.ForeignKey(Programa, on_delete=models.CASCADE)
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE)
     tipo_asistencia = models.ForeignKey(TipoAsistencia, on_delete=models.CASCADE)

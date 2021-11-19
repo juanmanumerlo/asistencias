@@ -128,3 +128,5 @@ try:
     from .configuraciones_locales import *
 except ImportError:
     raise Exception("El archivo de configuraciones locales es requerido para ejecutar este proyecto")
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
