@@ -1,0 +1,15 @@
+{% extends "base/base.html" %}
+{% block titulo %}Lista de Asignaciones{% endblock %}
+{% block contenido %}
+  <h1>Listado de asignaciones</h1>
+  {% if messages %}
+      {% for message in messages %}
+          {% if message.tags == 'success' %}  <div class="message">{{ message }}</div>{% endif %}
+      {% endfor %}
+  {% endif %}
+  <p><strong>Programa</strong> {{ asignacion.programa }}</p>
+  <p><strong>Nombre del beneficiario: </strong>{{ asignacion.persona }}</p>
+  <p><strong>Tipo de Asistencias</strong> {{ asignacion.tipo_asistencia }}</p>
+  <p><strong>Fecha de entrega: </strong>{{ asignacion.fecha_entrega|date:"SHORT_DATE_FORMAT" }}</p>
+  <p><strong>Cantidad: </strong>{{ asignacion.cantidad }}</p>
+{% endblock %}

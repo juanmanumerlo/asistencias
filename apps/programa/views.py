@@ -2,8 +2,8 @@ from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 
-from .forms import ProgramaForm
-from .models import Programa
+from .forms import ProgramaForm, AsignacionForm
+from .models import Programa, AsignacionBeneficio
 
 
 def programa_lista(request):
@@ -60,3 +60,27 @@ def programa_edit(request, pk):
         form_programa = ProgramaForm(instance=programa)
 
     return render(request, 'programa/programa_edit.html', {'form': form_programa})
+
+
+def asignacion_create(request):
+    nueva_asignacion = None
+    if request.method == 'POST':
+        asignacion_form = AsignacionForm(request.POST)
+        if asignacion_form.is_valid():
+            # Se guardan los datos que provienen del formulario en la B.D.
+            nueva_asignacion = asignacion_form.save(commit=True)
+            messages.success(request,
+                             '{}'.format(nueva_asignacion))
+            return redirect(reverse('programa:asignacion_lista', args={nueva_asignacion.id}))
+    else:
+        asignacion_form = AsignacionForm()
+
+    return render(request, 'programa/asignacion_form.html',
+                  {'form': asignacion_form})
+
+
+def asignacion_lista(request, pk):
+    asignacion = get_object_or_404(AsignacionBeneficio, pk=pk)
+    return render(request,
+                  'programa/asignacion_lista.html',
+                  {'asignacion': asignacion})

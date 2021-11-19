@@ -1,3 +1,5 @@
+from datetime import date
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms import DateInput
@@ -35,3 +37,36 @@ class ProgramaForm(forms.ModelForm):
                 code='invalido'
             )
         return cleaned_data
+
+
+class AsignacionForm(forms.ModelForm):
+    class Meta:
+        model = AsignacionBeneficio
+        fields = ('programa', 'persona', 'tipo_asistencia', 'fecha_entrega', 'cantidad')
+
+        widgets = {
+            'fecha_entrega': DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+        }
+
+        def clean_fecha(self):
+            cleaned_data = super().clean()
+            fecha_entrega = self.cleaned_data['fecha_entrega']
+            fecha_ahora = date.today
+            # Verifica que la fecha de asignacion no sea posterior a la fecha de hoy.
+            if fecha_entrega and fecha_entrega < fecha_ahora:
+                raise ValidationError(
+                    {'fecha_entrega': 'La Fecha de Asigancion de un Beneficio no puede posterior a la fecha de hoy'},
+                    code='invalido'
+                )
+            return cleaned_data
+
+        def clean_cantidad(self):
+            cleaned_data = super().clean()
+            cantidad = self.cleaned_data['cantidad']
+            # Verifica que la cantidad de beneficios no sea menor a 1.
+            if cantidad and cantidad < 1:
+                raise ValidationError(
+                    {'cantidad': 'La cantidad de beneficios por asignacion no puede ser menor a 1'},
+                    code='invalido'
+                )
+            return cleaned_data
