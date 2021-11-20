@@ -49,24 +49,22 @@ class AsignacionForm(forms.ModelForm):
         }
 
         def clean_fecha(self):
-            cleaned_data = super().clean()
             fecha_entrega = self.cleaned_data['fecha_entrega']
             fecha_ahora = date.today
             # Verifica que la fecha de asignacion no sea posterior a la fecha de hoy.
             if fecha_entrega and fecha_entrega < fecha_ahora:
                 raise ValidationError(
-                    {'fecha_entrega': 'La Fecha de Asigancion de un Beneficio no puede posterior a la fecha de hoy'},
+                    {'fecha_entrega': 'La Fecha de Asigancion de un Beneficio no puede ser posterior a la fecha de hoy'},
                     code='invalido'
                 )
-            return cleaned_data
+            return fecha_entrega
 
         def clean_cantidad(self):
-            cleaned_data = super().clean()
             cantidad = self.cleaned_data['cantidad']
             # Verifica que la cantidad de beneficios no sea menor a 1.
-            if cantidad and cantidad < 1:
+            if cantidad < 1.00:
                 raise ValidationError(
                     {'cantidad': 'La cantidad de beneficios por asignacion no puede ser menor a 1'},
                     code='invalido'
                 )
-            return cleaned_data
+            return cantidad
